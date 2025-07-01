@@ -1,3 +1,152 @@
+
+# WPO Academy - SPFx Básico
+
+##
+
+# SharePoint
+
+## O que é
+
+O SharePoint é uma plataforma web que disponibiliza sites com listas, bibliotecas e aplicações.
+
+- As **listas** funcionam de forma semelhante a um banco de dados, mas com uma interface mais visual e voltada para o usuário final.
+- As **bibliotecas** são utilizadas para armazenar e gerenciar arquivos com recursos avançados de controle e colaboração.
+- A parte de **site** permite a navegação entre páginas, conteúdos e recursos da organização.
+
+---
+
+## Site Collections
+
+Uma **Site Collection** é a estrutura raiz que agrupa todos os elementos do SharePoint: sites, subsites, listas, bibliotecas e páginas. É o "pai" de todo o conteúdo relacionado.
+
+---
+
+## Ambiente de Desenvolvimento SharePoint (SPFx)
+
+📚 Documentação oficial da Microsoft:  
+https://learn.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-development-environment
+
+### Instale os seguintes itens:
+
+- **Node.js** (versão recomendada: LTS)
+- **npm** (gerenciador de pacotes do Node.js)
+- **Yeoman e generator para SharePoint**:
+
+```powershell
+npm install -g yo @microsoft/generator-sharepoint
+```
+
+- **Gulp** (utilizado para automação de tarefas):
+
+```powershell
+npm install -g gulp
+```
+
+- **Visual Studio Code** (IDE recomendada)
+- **Opcional**: Instale o [NVM](https://github.com/nvm-sh/nvm) para facilitar a gestão de múltiplas versões do Node.js
+
+---
+
+### Criação do tenant
+
+Acesse:  
+🔗 https://cdx.transform.microsoft.com/
+
+---
+
+### Configuração via PowerShell
+
+1. Abra o **CMD ou PowerShell como administrador**
+2. Instale o módulo do SharePoint Online:
+
+```powershell
+Install-Module -Name Microsoft.Online.SharePoint.PowerShell
+```
+
+3. Conecte-se ao seu tenant:
+
+```powershell
+Connect-SPOService -Url "https://<tenant>-admin.sharepoint.com"
+```
+
+4. Instale o módulo PnP PowerShell:
+
+```powershell
+Install-Module -Name "PnP.PowerShell" -Scope CurrentUser
+```
+
+---
+
+## WebPart
+
+Uma **WebPart** é um componente modular reutilizável que pode ser adicionado a páginas do SharePoint para exibir informações ou interagir com conteúdos de forma personalizada.
+
+A ideia é utilizar WebParts principalmente para funcionalidades frequentes, como:
+
+- Operações **CRUD**
+- **Controle de permissões**
+- **Consumo de APIs**
+- Exibição de listas personalizadas
+
+Para iniciar um novo projeto e criar sua primeira WebPart:
+
+```powershell
+yo @microsoft/sharepoint
+```
+
+> A **Solution** é o pacote que encapsula todas as WebParts e recursos do projeto.
+
+---
+
+## Estrutura do Projeto
+
+- `config/package-solution.json`: configurações da solução, versionamento, recursos e metadados do projeto
+- `config/serve.json`: define qual página será aberta com `gulp serve`
+- `package-lock.json`: lista exata das dependências instaladas (não editar manualmente)
+- `package.json`: define as dependências e scripts do projeto (pode ser editado)
+- `node_modules/`: pasta com as dependências instaladas (não deve ser enviada ao repositório)
+- `src/`: diretório principal do desenvolvimento
+  - `src/webparts/`: onde ficam as WebParts
+  - `src/webparts/components/`: onde estão os componentes e a estrutura da WebPart
+
+**Importante**: O CSS da WebPart deve ser usado via `import styles from './MinhaWebPart.module.scss'`.  
+A aplicação de estilos deve ser feita com:
+
+```tsx
+className={styles.containerLG}
+```
+
+> Isso porque, no momento da compilação, o nome da classe será transformado.
+
+---
+
+## Debug local (sem usar o workbench online)
+
+Use a seguinte URL para testar localmente:
+
+```
+?debug=true&noredir=true&debugManifestsFile=https://localhost:4321/temp/manifests.js
+```
+
+---
+
+## Verificar pacotes instalados globalmente
+
+```bash
+npm -g ls --depth=0
+```
+
+---
+
+## Fast Serve (opcional)
+
+Você pode usar o **SPFx Fast Serve** como alternativa ao `gulp serve`, para acelerar a compilação e recarregamento do projeto:
+
+🔗 https://github.com/s-KaiNet/spfx-fast-serve
+
+
+
+############################################################
 # spfx
 
 ## Summary
