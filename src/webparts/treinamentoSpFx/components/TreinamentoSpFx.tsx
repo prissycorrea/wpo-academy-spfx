@@ -2,8 +2,41 @@ import * as React from 'react';
 import styles from './TreinamentoSpFx.module.scss';
 import type { ITreinamentoSpFxProps } from './ITreinamentoSpFxProps';
 import { escape } from '@microsoft/sp-lodash-subset';
+import { ITreinamentoState } from './ITreinamentoState';
+import { spfi, SPFI, SPFx } from '@pnp/sp';
+import '@pnp/sp/webs';
+import '@pnp/sp/lists';
+import '@pnp/sp/items';
+import '@pnp/sp/site-users';
 
-export default class TreinamentoSpFx extends React.Component<ITreinamentoSpFxProps, {}> {
+export default class TreinamentoSpFx extends React.Component<ITreinamentoSpFxProps, ITreinamentoState> {
+  constructor(props: ITreinamentoSpFxProps) {
+    super(props);
+
+    const sp: SPFI = spfi().using(SPFx(this.props.context));
+    this.state = {
+      items: [
+      ],
+      contador: 0,
+      sp: sp
+    };
+  }
+
+  public componentDidMount(): void {
+    const items: any = this.state.sp.web.lists.getByTitle("My List").items();
+    console.log(items);
+    let arrayTemp = this.state.items;
+    arrayTemp.push({ title: 'Item 1', id: 1 });
+
+    setTimeout(() => {
+      const contTemp = arrayTemp.length + this.state.contador
+
+      this.setState({
+        contador: contTemp,
+      });
+    }, 2000);
+  }
+
   public render(): React.ReactElement<ITreinamentoSpFxProps> {
     const {
       description,
@@ -19,7 +52,7 @@ export default class TreinamentoSpFx extends React.Component<ITreinamentoSpFxPro
           <img alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
           <h2>Well done, {escape(userDisplayName)}!</h2>
           <div>{environmentMessage}</div>
-          <div>Web part property value: <strong>{escape(description)}</strong></div>
+          <div>Web part property value: <strong>{escape(description)}, {this.props.sourceList}, número de itens a serem buscados na lista: {this.props.qtdItens}, contador: {this.state.contador} </strong></div>
         </div>
         <div>
           <h3>Welcome to SharePoint Framework!</h3>
